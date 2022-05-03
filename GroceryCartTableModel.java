@@ -46,6 +46,11 @@ public class GroceryCartTableModel extends DefaultTableModel{
         super.addRow(rowVector);
     }
 
+    // Deletes the currently selected row
+    public void deleteRow(Integer row){
+        super.removeRow(row);
+    }
+
     public void clear(){
         super.setRowCount(0);
     }

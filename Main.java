@@ -71,6 +71,7 @@ public class Main {
         JButton deleteItem = new JButton("Delete");
         deleteItem.setBounds(210,540,90,30);
         POS.add(deleteItem);
+        
 
         JLabel total = new JLabel("Total: 0.00");
         total.setBounds(10,565,257,41);
