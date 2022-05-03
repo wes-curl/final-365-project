@@ -1,5 +1,6 @@
 - add checks available groceries: use the stock panel
 - cart eliminates duplicates
 - limit cart items to number of items in stock
-- edit prices, # in stock via stock panel
+- edit prices in stock via stock panel
 - add items to stock panel
+- forbid decimals in integer table columns

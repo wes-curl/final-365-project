@@ -14,8 +14,6 @@ public class GroceryCartTableModel extends DefaultTableModel{
 
     @Override
     public void fireTableChanged(TableModelEvent e) {
-        System.out.println(e.getColumn());
-        System.out.println(e.getFirstRow());
         if(e.getFirstRow() >= 0 && e.getColumn() >= 0){
             System.out.println("Now has: " + super.getValueAt(e.getFirstRow(), e.getColumn()));
             Object quantity = super.getValueAt(e.getFirstRow(), e.getColumn());
@@ -23,7 +21,6 @@ public class GroceryCartTableModel extends DefaultTableModel{
                 super.removeRow(e.getFirstRow());
             }
         }
-        System.out.println("----");
         super.fireTableChanged(e);
     }
 

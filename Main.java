@@ -102,19 +102,6 @@ public class Main {
         scrollableCartList.setBounds(16,16, 278, 512);
         POS.add(scrollableCartList);
 
-        List<GroceryItem> allItems = List.of(new GroceryItem("carrots", 12, 12.31, 15), new GroceryItem("potatoes", 123, 0.32, 6));
-        String[] columnNames = {"Item name", "Item ID", "Item cost", "# in Stock"};
-
-        Object[][] data = new String[allItems.size()][4];
-        int i = 0;
-        for (GroceryItem I: allItems) {
-            data[i][0] = I.name;
-            data[i][1] = I.id.toString();
-            data[i][2] = I.cost.toString();
-            data[i][3] = I.stock.toString();
-            i++;
-        }
-
         JButton deleteItem = new JButton("Delete");
         deleteItem.setBounds(210,540,90,30);
         POS.add(deleteItem);
@@ -125,7 +112,21 @@ public class Main {
             }  
         });
 
-        JTable itemTable =  new JTable(displayTable(data, columnNames));
+        
+
+        StockTableModel stockTableModel = new StockTableModel();
+        List<GroceryItem> allItems = List.of(new GroceryItem("carrots", 12, 12.31, 15), new GroceryItem("potatoes", 123, 0.32, 6));
+
+        Object[] data = new Object[4];
+        for (GroceryItem I: allItems) {
+            data[0] = I.name;
+            data[1] = I.id;
+            data[2] = I.cost;
+            data[3] = I.stock;
+            stockTableModel.addRow(data);
+        }
+
+        JTable itemTable =  new JTable(stockTableModel);
         JScrollPane scrollableItemTable = new JScrollPane(itemTable);
         scrollableItemTable.setBounds(339,206, 245, 322);
         POS.add(scrollableItemTable);
@@ -140,8 +141,6 @@ public class Main {
         listOfItemsInCart.setBackground(new ColorUIResource(100, 100, 100));
         listOfItemsInCart.setBounds(10,10,290,524);
         POS.add(listOfItemsInCart);
-
-        
 
         JButton completeTransaction = new JButton("complete Transaction");
         completeTransaction.setBounds(333,540,257,50);
@@ -193,24 +192,5 @@ public class Main {
                 }
             }  
         });
-    }
-
-    private static AbstractTableModel displayTable(Object[][] rowData, String[] columnNames){
-        return new AbstractTableModel() {
-            public String getColumnName(int col) {
-                return columnNames[col].toString();
-            }
-            public int getRowCount() { return rowData.length; }
-            public int getColumnCount() { return columnNames.length; }
-            public Object getValueAt(int row, int col) {
-                return rowData[row][col];
-            }
-            public boolean isCellEditable(int row, int col)
-                { return false; }
-            public void setValueAt(Object value, int row, int col) {
-                rowData[row][col] = value;
-                fireTableCellUpdated(row, col);
-            }
-        };
     }
 }  
