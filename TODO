@@ -1,0 +1,4 @@
+- delete cart items at zero items
+- add checks available groceries: use a query
+- cart eliminates duplicates
+- delete row button
