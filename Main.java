@@ -1,10 +1,7 @@
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
-import java.util.LinkedList;
 import java.util.List;
 import java.awt.event.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import java.text.DecimalFormat;
@@ -12,11 +9,10 @@ import java.text.DecimalFormat;
 public class Main {  
     private static JFrame login = new JFrame();
     private static JFrame POS = new JFrame();
-    private static JFrame personalTransactionList = new JFrame();
+    /*private static JFrame personalTransactionList = new JFrame();
     private static JFrame globalTransactionList = new JFrame();
-    private static JFrame itemManager = new JFrame();
+    private static JFrame itemManager = new JFrame();*/
 
-    private static List<GroceryCartItem> cartItems;
     private static Double totalCost = 0d;
 
     private static JTable cartTable;
@@ -60,15 +56,10 @@ public class Main {
         login.setVisible(true);//making the frame visible  
     }
 
-    private static void makeTransactionList(Transaction transaction){
-
-    }
-
     private static void makePOS(){
         JButton addItem = new JButton("Add:");
         addItem.setBounds(10,540,60,30);
         POS.add(addItem);
-        
 
         JLabel total = new JLabel("Total: 0.00");
         total.setBounds(10,565,257,41);
@@ -86,12 +77,10 @@ public class Main {
             }
         });
 
-        cartItems = new LinkedList<GroceryCartItem>();
         GroceryCartTableModel cartTableModel = new GroceryCartTableModel();
         cartTableModel.addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
                totalCost = cartTableModel.getTotal();
-               System.out.print(totalCost.toString() + " is the new total");
                total.setText("$"+df.format(totalCost));
                POS.repaint();
             }
@@ -111,8 +100,6 @@ public class Main {
                 cartTableModel.removeRow(cartTable.getSelectedRow());
             }  
         });
-
-        
 
         StockTableModel stockTableModel = new StockTableModel();
         List<GroceryItem> allItems = List.of(new GroceryItem("carrots", 12, 12.31, 15), new GroceryItem("potatoes", 123, 0.32, 6));
@@ -148,9 +135,8 @@ public class Main {
 
         completeTransaction.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
-                System.out.println("cartItems...");
+                System.out.println("cart items in cartTableModel...");
                 System.out.println(totalCost);
-                cartItems = new LinkedList<GroceryCartItem>();
                 cartTableModel.clear();
             }  
         });
@@ -179,16 +165,18 @@ public class Main {
         POS.setSize(620,640);
         POS.setLayout(null);
         POS.setVisible(false);        
-
+        
         addItem.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
-                System.out.println(itemNumber.getText());
                 if(itemNumber.getText().length() > 0 && itemNumber.getText().length() < 10){
-                    cartItems.add(new GroceryCartItem(Integer.valueOf(itemNumber.getText()), "Nothing, yet"));
-                    cartItems.add(new GroceryCartItem(-1, "test"));
-                    itemNumber.setText("");
-                    Object[] row = {-1,"test", 1, 1.23};
-                    cartTableModel.addRow(row);
+                    Integer idNumber = Integer.parseInt(itemNumber.getText());
+                    System.out.println("adding: " + itemNumber.getText());
+                    if(stockTableModel.getByID(idNumber) != null && cartTableModel.getByID(idNumber) == null){
+                        GroceryItem GCI = stockTableModel.getByID(idNumber);
+                        Object[] row = {GCI.id, GCI.name, 1, GCI.cost};
+                        itemNumber.setText("");
+                        cartTableModel.addRow(row);
+                    }
                 }
             }  
         });

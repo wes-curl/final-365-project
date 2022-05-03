@@ -1,9 +1,9 @@
 import javax.swing.table.DefaultTableModel;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
 import javax.swing.event.TableModelEvent;
+
+import java.util.Enumeration;
 import java.util.Objects;
+import java.util.Vector;
 
 public class StockTableModel  extends DefaultTableModel{
     public static final String[] columnNames = {"Item name", "Item ID", "Item cost", "# in Stock"};
@@ -32,6 +32,17 @@ public class StockTableModel  extends DefaultTableModel{
             }
         }
         super.fireTableChanged(e);
+    }
+
+    public GroceryItem getByID(Integer ID){
+        Enumeration<Vector> elements = super.dataVector.elements();
+        while(elements.hasMoreElements()){
+            Vector v = elements.nextElement();
+            if(v.get(1) == ID){
+                return new GroceryItem((String)v.get(0), ID, (Double)v.get(2), (Integer)v.get(3));
+            }
+        }
+        return null;
     }
 
     @Override

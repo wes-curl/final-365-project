@@ -1,9 +1,8 @@
 import javax.swing.table.DefaultTableModel;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Vector;
 import javax.swing.event.TableModelEvent;
 import java.util.Objects;
+import java.util.Enumeration;
 
 public class GroceryCartTableModel extends DefaultTableModel{
     public static final String[] columnNames = {"ID", "Name", "Quantity", "Unit Cost"};
@@ -22,6 +21,17 @@ public class GroceryCartTableModel extends DefaultTableModel{
             }
         }
         super.fireTableChanged(e);
+    }
+
+    public GroceryCartItem getByID(Integer ID){
+        Enumeration<Vector> elements = super.dataVector.elements();
+        while(elements.hasMoreElements()){
+            Vector v = elements.nextElement();
+            if(v.get(0) == ID){
+                return new GroceryCartItem(ID, (String)v.get(1));
+            }
+        }
+        return null;
     }
 
     public Double getTotal(){
