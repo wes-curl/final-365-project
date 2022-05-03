@@ -68,9 +68,6 @@ public class Main {
         JButton addItem = new JButton("Add:");
         addItem.setBounds(10,540,60,30);
         POS.add(addItem);
-        JButton deleteItem = new JButton("Delete");
-        deleteItem.setBounds(210,540,90,30);
-        POS.add(deleteItem);
         
 
         JLabel total = new JLabel("Total: 0.00");
@@ -117,6 +114,16 @@ public class Main {
             data[i][3] = I.stock.toString();
             i++;
         }
+
+        JButton deleteItem = new JButton("Delete");
+        deleteItem.setBounds(210,540,90,30);
+        POS.add(deleteItem);
+
+        deleteItem.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                cartTableModel.removeRow(cartTable.getSelectedRow());
+            }  
+        });
 
         JTable itemTable =  new JTable(displayTable(data, columnNames));
         JScrollPane scrollableItemTable = new JScrollPane(itemTable);
