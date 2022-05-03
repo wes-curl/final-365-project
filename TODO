@@ -1,4 +1,3 @@
-- delete cart items at zero items
 - add checks available groceries: use the stock panel
 - cart eliminates duplicates
 - limit cart items to number of items in stock

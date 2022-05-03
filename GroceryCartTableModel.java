@@ -3,6 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.event.TableModelEvent;
+import java.util.Objects;
 
 public class GroceryCartTableModel extends DefaultTableModel{
     public static final String[] columnNames = {"ID", "Name", "Quantity", "Unit Cost"};
@@ -15,6 +16,13 @@ public class GroceryCartTableModel extends DefaultTableModel{
     public void fireTableChanged(TableModelEvent e) {
         System.out.println(e.getColumn());
         System.out.println(e.getFirstRow());
+        if(e.getFirstRow() >= 0 && e.getColumn() >= 0){
+            System.out.println("Now has: " + super.getValueAt(e.getFirstRow(), e.getColumn()));
+            Object quantity = super.getValueAt(e.getFirstRow(), e.getColumn());
+            if(Objects.isNull(quantity) || (Integer)quantity <= 0){
+                super.removeRow(e.getFirstRow());
+            }
+        }
         System.out.println("----");
         super.fireTableChanged(e);
     }
