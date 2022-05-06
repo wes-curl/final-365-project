@@ -21,7 +21,7 @@ create table if not exists transaction (
 	transactionID int not null unique auto_increment,
     transactionTOTAL int not null default 0,
     transactionCLERK varchar(16) not null,
-    transactionDATE date not null default (CURRENT_DATE),
+    transactionDATE datetime not null default current_timestamp,
     foreign key (transactionCLERK)
 		references clerk(clerkLOGIN),
     primary key (transactionID)
@@ -49,10 +49,6 @@ create table if not exists purchasedgoods (
 		references produce(produceID, produceCOST)
 );
 
-insert 
-	into purchasedgoods
-	values
-		(1, 
 create table if not exists clerk (
 	clerkLOGIN varchar(16) not null,
     clerkNAME varchar(40) not null,
@@ -67,9 +63,7 @@ insert
     ("wescurl", "Wesley Curl", "supersdupersafepass");
     
     
-    
-    
-    
+drop table purchasedgoods;
     
     
     
