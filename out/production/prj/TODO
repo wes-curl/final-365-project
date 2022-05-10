@@ -1,0 +1,10 @@
+- add items to stock panel
+- view previous transactions
+
+Database stuff:
+- connect to db
+- Login query
+- update stock
+- query stock
+- update transactions
+- query transactions
