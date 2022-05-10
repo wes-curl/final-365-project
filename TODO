@@ -1,7 +1,4 @@
-- limit cart items to number of items in stock
-- edit prices in stock via stock panel
 - add items to stock panel
-- forbid decimals in integer table columns
 - view previous transactions
 
 Database stuff:

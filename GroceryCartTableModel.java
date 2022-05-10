@@ -6,9 +6,11 @@ import java.util.Enumeration;
 
 public class GroceryCartTableModel extends DefaultTableModel{
     public static final String[] columnNames = {"ID", "Name", "Quantity", "Unit Cost"};
+    public static StockTableModel stockTable = null;
 
-    public GroceryCartTableModel() {
+    public GroceryCartTableModel(StockTableModel stm) {
         super(columnNames, 0);
+        stockTable = stm;
     }
 
     @Override
@@ -18,6 +20,12 @@ public class GroceryCartTableModel extends DefaultTableModel{
             Object quantity = super.getValueAt(e.getFirstRow(), e.getColumn());
             if(Objects.isNull(quantity) || (Integer)quantity <= 0){
                 super.removeRow(e.getFirstRow());
+            }
+            Integer itemID = (Integer)super.getValueAt(e.getFirstRow(), 0);
+            Integer quantityInteger = (Integer) quantity;
+            GroceryItem stockItem = stockTable.getByID(itemID);
+            if(quantityInteger > stockItem.stock){
+                super.setValueAt(stockItem.stock, e.getFirstRow(), e.getColumn());
             }
         }
         super.fireTableChanged(e);

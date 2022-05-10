@@ -77,7 +77,9 @@ public class Main {
             }
         });
 
-        GroceryCartTableModel cartTableModel = new GroceryCartTableModel();
+        StockTableModel stockTableModel = new StockTableModel();
+
+        GroceryCartTableModel cartTableModel = new GroceryCartTableModel(stockTableModel);
         cartTableModel.addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
                totalCost = cartTableModel.getTotal();
@@ -101,7 +103,6 @@ public class Main {
             }  
         });
 
-        StockTableModel stockTableModel = new StockTableModel();
         List<GroceryItem> allItems = List.of(new GroceryItem("carrots", 12, 12.31, 15), new GroceryItem("potatoes", 123, 0.32, 6));
 
         Object[] data = new Object[4];
