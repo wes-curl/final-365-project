@@ -9,18 +9,17 @@ import java.text.DecimalFormat;
 public class Main {  
     private static JFrame login = new JFrame();
     private static JFrame POS = new JFrame();
-    /*private static JFrame personalTransactionList = new JFrame();
-    private static JFrame globalTransactionList = new JFrame();
-    private static JFrame itemManager = new JFrame();*/
 
     private static Double totalCost = 0d;
 
     private static JTable cartTable;
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
-    
 
-    public static void main(String[] args) {  
+    private static GroceryDatabaseConnector groceryDatabaseConnector = new GroceryDatabaseConnector();
+
+    public static void main(String[] args) { 
+        groceryDatabaseConnector.getGroceryItems(); 
         makeLogin();
         makePOS(); 
     }  
@@ -64,6 +63,7 @@ public class Main {
         JLabel total = new JLabel("Total: 0.00");
         total.setBounds(10,565,257,41);
         POS.add(total);
+
         JTextField itemNumber = new JTextField();
         itemNumber.setBounds(80,540,120,30);
         POS.add(itemNumber);
@@ -142,21 +142,21 @@ public class Main {
             }  
         });
 
-        JLabel welcome = new JLabel("Welcome ---------");
+        JLabel welcome = new JLabel("Welcome ---------", SwingConstants.CENTER);
         welcome.setBounds(333,10,257,41);
         POS.add(welcome);
-
-        JButton seeAllTransactions = new JButton("See all transactions");
-        seeAllTransactions.setBounds(358,99,207,32);
-        POS.add(seeAllTransactions);
 
         JButton seeYourTransactions = new JButton("See your transactions");
         seeYourTransactions.setBounds(358,51,207,32);
         POS.add(seeYourTransactions);
 
-        JButton logOut = new JButton("Manage Inventory");
-        logOut.setBounds(358,146,207,32);
-        POS.add(logOut);
+        JButton seeAllTransactions = new JButton("See all transactions");
+        seeAllTransactions.setBounds(358,88,207,32);
+        POS.add(seeAllTransactions);
+
+        JTextField newItemName = new JTextField("Manage Inventory");
+        newItemName.setBounds(358,125,207,28);
+        POS.add(newItemName);
 
         JPanel availableData = new JPanel();
         availableData.setBackground(new ColorUIResource(100, 100, 100));
