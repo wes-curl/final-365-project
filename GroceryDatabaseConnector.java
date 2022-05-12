@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 public class GroceryDatabaseConnector {
     Connection connection;
@@ -44,6 +45,7 @@ public class GroceryDatabaseConnector {
     }
 
     public void getItemsFromSpecificTransaction(int transaction){
+        ArrayList<ArrayList<String>> infoList = new ArrayList<>();
         try{
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from purchasedgoods where purchasedgoodsTRID = " + String.valueOf(transaction));
@@ -61,7 +63,8 @@ public class GroceryDatabaseConnector {
         }
     }
 
-    public void getClerkTransactions(String clerkLogin){
+    public ArrayList<ArrayList<String>> getClerkTransactions(String clerkLogin){
+        ArrayList<ArrayList<String>> infoList = new ArrayList<>();
         try{
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from transaction where transactionCLERK = '" + clerkLogin + "'");
@@ -72,6 +75,12 @@ public class GroceryDatabaseConnector {
                 String trclerk = resultSet.getString(3);
                 String trdate = resultSet.getString(4);
                 String row = String.format("%8s , %8s , %8s , %8s", trid, trtot, trclerk, trdate);
+                ArrayList<String> infoRow = new ArrayList<>();
+                infoRow.add(trid);
+                infoRow.add(trtot);
+                infoRow.add(trclerk);
+                infoRow.add(trdate);
+                infoList.add(infoRow);
                 System.out.println(row);
             }
             String row = String.format("%8s , %8s , %8s , %8s", "null", "null", "null", "null");
@@ -79,9 +88,11 @@ public class GroceryDatabaseConnector {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return infoList;
     }
 
-    public void getAllClerkTransactions(){
+    public ArrayList<ArrayList<String>> getAllClerkTransactions(){
+        ArrayList<ArrayList<String>> infoList = new ArrayList<>();
         try{
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from transaction");
@@ -92,6 +103,12 @@ public class GroceryDatabaseConnector {
                 String trclerk = resultSet.getString(3);
                 String trdate = resultSet.getString(4);
                 String row = String.format("%8s , %8s , %8s , %8s", trid, trtot, trclerk, trdate);
+                ArrayList<String> infoRow = new ArrayList<>();
+                infoRow.add(trid);
+                infoRow.add(trtot);
+                infoRow.add(trclerk);
+                infoRow.add(trdate);
+                infoList.add(infoRow);
                 System.out.println(row);
             }
             String row = String.format("%8s , %8s , %8s , %8s", "null", "null", "null", "null");
@@ -99,5 +116,6 @@ public class GroceryDatabaseConnector {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return infoList;
     }
 }

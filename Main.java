@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
+import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.*;
 import javax.swing.event.TableModelEvent;
@@ -20,6 +21,9 @@ public class Main {
     private static GroceryDatabaseConnector groceryDatabaseConnector = new GroceryDatabaseConnector();
 
     private static String loginName = "";
+
+    private static StockTableModel stockTableModel = new StockTableModel();
+    private static TransactionTableModel transactionModel = new TransactionTableModel(stockTableModel);
 
     public static void main(String[] args) { 
 //        groceryDatabaseConnector.getGroceryItems();
@@ -115,9 +119,9 @@ public class Main {
             }
         });
 
-        StockTableModel stockTableModel = new StockTableModel();
+        StockTableModel stockTableModelInside = new StockTableModel();
 
-        GroceryCartTableModel cartTableModel = new GroceryCartTableModel(stockTableModel);
+        GroceryCartTableModel cartTableModel = new GroceryCartTableModel(stockTableModelInside);
         cartTableModel.addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
                totalCost = cartTableModel.getTotal();
@@ -237,20 +241,36 @@ public class Main {
         });
         seeYourTransactions.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                groceryDatabaseConnector.getClerkTransactions(loginName);
+                ArrayList<ArrayList<String>> transactions = groceryDatabaseConnector.getClerkTransactions(loginName);
+                Object[] data = new Object[4];
+                transactionModel.clear();
+                for (ArrayList<String> listed: transactions) {
+                    data[0] = listed.get(0);
+                    data[1] = listed.get(1);
+                    data[2] = listed.get(2);
+                    data[3] = listed.get(3);
+                    transactionModel.addRow(data);
+                }
+                myTransactions.repaint();
             }
         });
         seeAllTransactions.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                groceryDatabaseConnector.getAllClerkTransactions();
+                ArrayList<ArrayList<String>> transactions = groceryDatabaseConnector.getAllClerkTransactions();
+                Object[] data = new Object[4];
+                transactionModel.clear();
+                for (ArrayList<String> listed: transactions) {
+                    data[0] = listed.get(0);
+                    data[1] = listed.get(1);
+                    data[2] = listed.get(2);
+                    data[3] = listed.get(3);
+                    transactionModel.addRow(data);
+                }
+                myTransactions.repaint();
             }
         });
     }
     private static void makeMyTransactions(){
-
-        StockTableModel stockTableModel = new StockTableModel();
-
-        TransactionTableModel transactionModel = new TransactionTableModel(stockTableModel);
 
         cartTable = new JTable(transactionModel);
         JScrollPane scrollableCartList = new JScrollPane(cartTable);
