@@ -19,7 +19,10 @@ public class Main {
     private static GroceryDatabaseConnector groceryDatabaseConnector = new GroceryDatabaseConnector();
 
     public static void main(String[] args) { 
-        groceryDatabaseConnector.getGroceryItems(); 
+//        groceryDatabaseConnector.getGroceryItems();
+//        groceryDatabaseConnector.getTransactions();
+        groceryDatabaseConnector.getItemsFromSpecificTransaction(1);
+        groceryDatabaseConnector.getClerkTransactions("tli30");
         makeLogin();
         makePOS(); 
     }  
