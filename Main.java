@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 public class Main {  
     private static JFrame login = new JFrame();
     private static JFrame POS = new JFrame();
+    private static JFrame myTransactions = new JFrame();
 
     private static Double totalCost = 0d;
 
@@ -18,21 +19,28 @@ public class Main {
 
     private static GroceryDatabaseConnector groceryDatabaseConnector = new GroceryDatabaseConnector();
 
+    private static String loginName = "";
+
     public static void main(String[] args) { 
 //        groceryDatabaseConnector.getGroceryItems();
 //        groceryDatabaseConnector.getTransactions();
-        groceryDatabaseConnector.getItemsFromSpecificTransaction(1);
-        groceryDatabaseConnector.getClerkTransactions("tli30");
+//        groceryDatabaseConnector.getItemsFromSpecificTransaction(1);
+//        groceryDatabaseConnector.getClerkTransactions("tli30");
         makeLogin();
-        makePOS(); 
-    }  
+        makePOS();
+        makeMyTransactions();
+    }
+
+    private static void setLogin(String name){
+        loginName = name;
+    }
 
     private static void makeLogin(){
         JLabel title = new JLabel("A Real P.O.S.");
         title.setBounds(13,12,175,40);
         login.add(title);
 
-        JTextField userName = new JTextField("Username");
+        JTextField userName = new JTextField("");
         userName.setBounds(50,85,100,20);
         login.add(userName);   
 
@@ -44,17 +52,44 @@ public class Main {
         submit.setBounds(65,176,70,16);
         login.add(submit);
 
+        userName.addFocusListener(new FocusListener() {
+            public void focusLost(FocusEvent e) {
+                if(userName.getText().trim().equals(""))
+                    userName.setText("username");
+                //do nothing
+            }
+            public void focusGained(FocusEvent e) {
+                if(userName.getText().trim().equals("username"))
+                    userName.setText("");
+                //do nothing
+            }
+        });
+//        passwordField.addFocusListener(new FocusListener() {
+//            public void focusLost(FocusEvent e) {
+//                if(passwordField.getText().trim().equals(""))
+//                    passwordField.setText("password");
+//                //do nothing
+//            }
+//            public void focusGained(FocusEvent e) {
+//                if(passwordField.getText().trim().equals("password"))
+//                    passwordField.setText("");
+//                //do nothing
+//            }
+//        });
         submit.addActionListener(new ActionListener(){  
-            public void actionPerformed(ActionEvent e){  
+            public void actionPerformed(ActionEvent e){
+                POS.setLocationRelativeTo(null);
                 POS.setVisible(true);
                 System.out.println(userName.getText());
                 System.out.println(passwordField.getPassword());
+                setLogin(userName.getText());
                 login.setVisible(false);
             }  
         });
         
         login.setSize(200,300);
-        login.setLayout(null);//using no layout managers  
+        login.setLayout(null);//using no layout managers
+        login.setLocationRelativeTo(null);
         login.setVisible(true);//making the frame visible  
     }
 
@@ -153,9 +188,25 @@ public class Main {
         seeYourTransactions.setBounds(358,51,207,32);
         POS.add(seeYourTransactions);
 
+        seeYourTransactions.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                myTransactions.setLocationRelativeTo(null);
+                myTransactions.setVisible(true);
+                POS.setVisible(false);
+            }
+        });
+
         JButton seeAllTransactions = new JButton("See all transactions");
         seeAllTransactions.setBounds(358,88,207,32);
         POS.add(seeAllTransactions);
+
+        seeAllTransactions.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                myTransactions.setLocationRelativeTo(null);
+                myTransactions.setVisible(true);
+                POS.setVisible(false);
+            }
+        });
 
         JTextField newItemName = new JTextField("Manage Inventory");
         newItemName.setBounds(358,125,207,28);
@@ -184,5 +235,47 @@ public class Main {
                 }
             }  
         });
+        seeYourTransactions.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                groceryDatabaseConnector.getClerkTransactions(loginName);
+            }
+        });
+        seeAllTransactions.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                groceryDatabaseConnector.getAllClerkTransactions();
+            }
+        });
+    }
+    private static void makeMyTransactions(){
+
+        StockTableModel stockTableModel = new StockTableModel();
+
+        TransactionTableModel transactionModel = new TransactionTableModel(stockTableModel);
+
+        cartTable = new JTable(transactionModel);
+        JScrollPane scrollableCartList = new JScrollPane(cartTable);
+        scrollableCartList.setBounds(16,16, 570, 512);
+        myTransactions.add(scrollableCartList);
+
+        int buttonWidth = 257;
+        int uiWidth = 620;
+        int xCenter = (uiWidth - buttonWidth) / 2;
+        JButton returnToPOS = new JButton("Return to POS");
+        returnToPOS.setBounds(xCenter,540,buttonWidth,50);
+        myTransactions.add(returnToPOS);
+
+        returnToPOS.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                System.out.println("Returning to POS");
+                myTransactions.setVisible(false);
+                POS.setLocationRelativeTo(null);
+                POS.setVisible(true);
+            }
+        });
+
+        myTransactions.setSize(uiWidth,640);
+        myTransactions.setLayout(null);
+        myTransactions.setVisible(false);
+
     }
 }  

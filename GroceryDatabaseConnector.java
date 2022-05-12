@@ -74,6 +74,28 @@ public class GroceryDatabaseConnector {
                 String row = String.format("%8s , %8s , %8s , %8s", trid, trtot, trclerk, trdate);
                 System.out.println(row);
             }
+            String row = String.format("%8s , %8s , %8s , %8s", "null", "null", "null", "null");
+            System.out.println(row);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getAllClerkTransactions(){
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from transaction");
+            System.out.println(String.format("%8s | %8s | %8s | %8s", "TRID", "TRTOT", "TRCLERK", "TRDATE"));
+            while(resultSet.next()){
+                String trid = resultSet.getString(1);
+                String trtot = resultSet.getString(2);
+                String trclerk = resultSet.getString(3);
+                String trdate = resultSet.getString(4);
+                String row = String.format("%8s , %8s , %8s , %8s", trid, trtot, trclerk, trdate);
+                System.out.println(row);
+            }
+            String row = String.format("%8s , %8s , %8s , %8s", "null", "null", "null", "null");
+            System.out.println(row);
         } catch (Exception e) {
             e.printStackTrace();
         }
