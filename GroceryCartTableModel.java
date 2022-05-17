@@ -1,7 +1,4 @@
 import javax.swing.table.DefaultTableModel;
-
-import com.mysql.cj.protocol.a.DebugBufferingPacketReader;
-
 import java.util.Vector;
 import javax.swing.event.TableModelEvent;
 import java.util.Objects;

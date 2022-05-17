@@ -118,4 +118,22 @@ public class GroceryDatabaseConnector {
         }
         return infoList;
     }
+
+    public Clerk isValidLogin(String username, String password){
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from clerk where clerkLOGIN = '"+username+"' and clerkPW = '"+password+"'");
+            System.out.println("select * from clerk where clerkLOGIN = '"+username+"' and clerkPW = '"+password+"'");
+            if(resultSet.next()){
+                String login = resultSet.getString(1);
+                String name = resultSet.getString(2);
+                String pw = resultSet.getString(3);
+                return new Clerk(login, name, pw);
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

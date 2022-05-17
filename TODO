@@ -1,9 +1,7 @@
 - add items to stock panel (W)
-- debug stock panel (W)
 - update costs/number in stock should trigger checks in the frontend (W)
 
 Database stuff:
-- Login query (W)
 - Add Button scenario [where item is already in the cart]
     Likely should behave such that the quantity is incremented by 1 instead of doing nothing.
     or do whatever (W)

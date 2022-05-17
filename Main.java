@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.*;
@@ -21,7 +20,7 @@ public class Main {
 
     private static GroceryDatabaseConnector groceryDatabaseConnector = new GroceryDatabaseConnector();
 
-    private static String loginName = "";
+    private static Clerk clerk = null;
 
     private static StockTableModel stockTableModel = new StockTableModel();
     private static TransactionTableModel transactionModel = new TransactionTableModel(stockTableModel);
@@ -37,10 +36,6 @@ public class Main {
         POS.setTitle("Point of Service 3000");
         makeMyTransactions();
         myTransactions.setTitle("Transactions Menu");
-    }
-
-    private static void setLogin(String name){
-        loginName = name;
     }
 
     private static void makeLogin(){
@@ -87,11 +82,15 @@ public class Main {
         submit.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){
                 POS.setLocationRelativeTo(null);
-                POS.setVisible(true);
                 System.out.println(userName.getText());
                 System.out.println(passwordField.getPassword());
-                setLogin(userName.getText());
-                login.setVisible(false);
+                if(userName.getText().length() > 0 && passwordField.getPassword().length > 0){
+                    clerk = groceryDatabaseConnector.isValidLogin(userName.getText(), String.valueOf(passwordField.getPassword()));
+                    if(clerk != null){
+                        login.setVisible(false);
+                        POS.setVisible(true);
+                    }
+                }
             }  
         });
         
@@ -248,7 +247,7 @@ public class Main {
         });
         seeYourTransactions.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                ArrayList<ArrayList<String>> transactions = groceryDatabaseConnector.getClerkTransactions(loginName);
+                ArrayList<ArrayList<String>> transactions = groceryDatabaseConnector.getClerkTransactions(clerk.getLogin());
                 Object[] data = new Object[4];
                 transactionModel.clear();
                 for (ArrayList<String> listed: transactions) {
