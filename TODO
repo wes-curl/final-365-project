@@ -5,7 +5,6 @@
 Database stuff:
 - Login query (W)
 - Add Button Null Pointer Exception (W)
-- Delete Button Out-of-Bounds Index Exception (W)
 - Add Button scenario [where item is already in the cart]
     Likely should behave such that the quantity is incremented by 1 instead of doing nothing.
     or do whatever (W)

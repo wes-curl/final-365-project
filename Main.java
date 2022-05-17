@@ -32,8 +32,11 @@ public class Main {
 //        groceryDatabaseConnector.getItemsFromSpecificTransaction(1);
 //        groceryDatabaseConnector.getClerkTransactions("tli30");
         makeLogin();
+        login.setTitle("Login Point");
         makePOS();
+        POS.setTitle("Point of Service 3000");
         makeMyTransactions();
+        myTransactions.setTitle("Transactions Menu");
     }
 
     private static void setLogin(String name){
@@ -142,7 +145,11 @@ public class Main {
 
         deleteItem.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
-                cartTableModel.removeRow(cartTable.getSelectedRow());
+                System.out.println("deleting current row: " + cartTable.getSelectedRow());
+                System.out.println(cartTable.getSize());
+                if(cartTable.getSelectedRow() > -1){
+                    cartTableModel.removeRow(cartTable.getSelectedRow());
+                }
             }  
         });
 
@@ -271,10 +278,11 @@ public class Main {
             }
         });
     }
-    private static void makeMyTransactions(){
 
-        cartTable = new JTable(transactionModel);
-        JScrollPane scrollableCartList = new JScrollPane(cartTable);
+
+    private static void makeMyTransactions(){
+        JTable transactionCartTable = new JTable(transactionModel);
+        JScrollPane scrollableCartList = new JScrollPane(transactionCartTable);
         scrollableCartList.setBounds(16,16, 570, 512);
         myTransactions.add(scrollableCartList);
 
