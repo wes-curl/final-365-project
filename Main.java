@@ -123,9 +123,8 @@ public class Main {
             }
         });
 
-        StockTableModel stockTableModelInside = new StockTableModel();
 
-        GroceryCartTableModel cartTableModel = new GroceryCartTableModel(stockTableModelInside);
+        GroceryCartTableModel cartTableModel = new GroceryCartTableModel(stockTableModel);
         cartTableModel.addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
                totalCost = cartTableModel.getTotal();

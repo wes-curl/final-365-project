@@ -4,9 +4,7 @@
 
 Database stuff:
 - Login query (W)
-- Add Button Null Pointer Exception (W)
 - Add Button scenario [where item is already in the cart]
     Likely should behave such that the quantity is incremented by 1 instead of doing nothing.
     or do whatever (W)
-ever (W)
 - complete transaction updates transaction record (T)

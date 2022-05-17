@@ -27,7 +27,7 @@ public class GroceryCartTableModel extends DefaultTableModel{
             Integer itemID = (Integer)super.getValueAt(e.getFirstRow(), 0);
             Integer quantityInteger = (Integer) quantity;
             GroceryItem stockItem = stockTable.getByID(itemID);
-            if(quantityInteger <= stockItem.stock){
+            if(quantityInteger > stockItem.stock){
                 super.setValueAt(stockItem.stock, e.getFirstRow(), e.getColumn());
             }
         }
