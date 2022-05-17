@@ -32,8 +32,11 @@ public class Main {
 //        groceryDatabaseConnector.getItemsFromSpecificTransaction(1);
 //        groceryDatabaseConnector.getClerkTransactions("tli30");
         makeLogin();
+        login.setTitle("Login Point");
         makePOS();
+        POS.setTitle("Point of Service 3000");
         makeMyTransactions();
+        myTransactions.setTitle("Transactions Menu");
     }
 
     private static void setLogin(String name){
