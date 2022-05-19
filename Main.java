@@ -190,7 +190,7 @@ public class Main {
             }  
         });
 
-        JLabel welcome = new JLabel("Welcome ---------", SwingConstants.CENTER);
+        JLabel welcome = new JLabel("Welcome " + clerk.getName(), SwingConstants.CENTER);
         welcome.setBounds(333,10,257,41);
         POS.add(welcome);
 
@@ -236,11 +236,15 @@ public class Main {
                 if(itemNumber.getText().length() > 0 && itemNumber.getText().length() < 10){
                     Integer idNumber = Integer.parseInt(itemNumber.getText());
                     System.out.println("adding: " + itemNumber.getText());
-                    if(stockTableModel.getByID(idNumber) != null && cartTableModel.getByID(idNumber) == null){
+                    if(stockTableModel.getByID(idNumber) != null){
                         GroceryItem GCI = stockTableModel.getByID(idNumber);
                         Object[] row = {GCI.id, GCI.name, 1, GCI.cost};
                         itemNumber.setText("");
-                        cartTableModel.addRow(row);
+                        if(cartTableModel.getByID(idNumber) == null){
+                            cartTableModel.addRow(row);
+                        } else {
+                            cartTableModel.updateRow(row);
+                        }
                     }
                 }
             }  

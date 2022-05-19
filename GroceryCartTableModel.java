@@ -69,6 +69,17 @@ public class GroceryCartTableModel extends DefaultTableModel{
         super.addRow(rowVector);
     }
 
+    // finds a row that matches rowData[0] and increments its rowdata[2] by one
+    public void updateRow(Object[] rowData){
+        Vector<Vector> tableVector = super.dataVector;
+        // for each row...
+        for(int i = 0; i < tableVector.size(); i++){
+            if(tableVector.get(i).get(0) == rowData[0]){
+                super.setValueAt((int)super.getValueAt(i, 2) + 1, i, 2);
+            }
+        }
+    }
+
     // Deletes the currently selected row
     public void deleteRow(Integer row){
         super.removeRow(row);

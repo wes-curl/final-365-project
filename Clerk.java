@@ -12,4 +12,8 @@ public class Clerk {
     public String getLogin() {
         return login;
     }
+
+    public String getName() {
+        return name;
+    }
 }
