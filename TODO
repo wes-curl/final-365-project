@@ -2,4 +2,5 @@
 - update costs/number in stock should trigger checks in the frontend (W)
 
 Database stuff:
+- connect database info to relevant tables
 - complete transaction updates transaction record (T)
