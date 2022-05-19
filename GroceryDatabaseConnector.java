@@ -4,8 +4,6 @@ import java.util.ArrayList;
 public class GroceryDatabaseConnector {
     Connection connection;
     private static String driver = "com.mysql.cj.jdbc.Driver";
-    private static String driverTONYFILE = "com.mysql.jdbc.Driver";
-    private static String url = "ambari-node5.csc.calpoly.edu:3306";
     private static String user = "licurldb";
     private static String password = "securedbpw";
 
@@ -45,7 +43,6 @@ public class GroceryDatabaseConnector {
     }
 
     public void getItemsFromSpecificTransaction(int transaction){
-        ArrayList<ArrayList<String>> infoList = new ArrayList<>();
         try{
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from purchasedgoods where purchasedgoodsTRID = " + String.valueOf(transaction));
