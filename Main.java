@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.awt.event.*;
 import javax.swing.event.TableModelEvent;
@@ -17,19 +18,20 @@ public class Main {
     private static JTable cartTable;
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
+    public static JLabel welcome = new JLabel("Welcome ", SwingConstants.CENTER);
 
     private static GroceryDatabaseConnector groceryDatabaseConnector = new GroceryDatabaseConnector();
 
     private static Clerk clerk = null;
 
-    private static StockTableModel stockTableModel = new StockTableModel();
+    private static StockTableModel stockTableModel = new StockTableModel(null);
+    private static GroceryCartTableModel cartTableModel  = new GroceryCartTableModel(stockTableModel);
     private static TransactionTableModel transactionModel = new TransactionTableModel(stockTableModel);
+    private static List<GroceryItem> allItems;
 
     public static void main(String[] args) { 
-//        groceryDatabaseConnector.getGroceryItems();
-//        groceryDatabaseConnector.getTransactions();
-//        groceryDatabaseConnector.getItemsFromSpecificTransaction(1);
-//        groceryDatabaseConnector.getClerkTransactions("tli30");
+        stockTableModel.GCTM = cartTableModel;
+        allItems = groceryDatabaseConnector.getGroceryItems();
         makeLogin();
         login.setTitle("Login Point");
         makePOS();
@@ -89,6 +91,7 @@ public class Main {
                     if(clerk != null){
                         login.setVisible(false);
                         POS.setVisible(true);
+                        welcome.setText("Welcome " + clerk.getName());
                     }
                 }
             }  
@@ -123,7 +126,6 @@ public class Main {
         });
 
 
-        GroceryCartTableModel cartTableModel = new GroceryCartTableModel(stockTableModel);
         cartTableModel.addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
                totalCost = cartTableModel.getTotal();
@@ -150,8 +152,6 @@ public class Main {
                 }
             }  
         });
-
-        List<GroceryItem> allItems = List.of(new GroceryItem("carrots", 12, 12.31, 15), new GroceryItem("potatoes", 123, 0.32, 6));
 
         Object[] data = new Object[4];
         for (GroceryItem I: allItems) {
@@ -186,11 +186,11 @@ public class Main {
             public void actionPerformed(ActionEvent e){  
                 System.out.println("cart items in cartTableModel...");
                 System.out.println(totalCost);
+                groceryDatabaseConnector.submitTransaction(cartTableModel.getDataVector(), clerk.getLogin());
                 cartTableModel.clear();
             }  
         });
 
-        JLabel welcome = new JLabel("Welcome " + clerk.getName(), SwingConstants.CENTER);
         welcome.setBounds(333,10,257,41);
         POS.add(welcome);
 
@@ -218,9 +218,21 @@ public class Main {
             }
         });
 
-        JTextField newItemName = new JTextField("Manage Inventory");
-        newItemName.setBounds(358,125,207,28);
+        JButton newItem = new JButton("Add a new item");
+        newItem.setBounds(358,125,207,28);
+        POS.add(newItem);
+
+        JTextField newItemName = new JTextField("[item name]");
+        newItemName.setBounds(358,155,207,28);
         POS.add(newItemName);
+
+        newItem.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                System.out.println("added item " + newItemName.getText());
+                GroceryItem GI = groceryDatabaseConnector.createNewItem(newItemName.getText());
+                stockTableModel.addItem(GI);
+            }  
+        });
 
         JPanel availableData = new JPanel();
         availableData.setBackground(new ColorUIResource(100, 100, 100));

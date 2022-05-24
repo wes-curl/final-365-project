@@ -6,10 +6,11 @@ import java.util.Vector;
 
 public class StockTableModel  extends DefaultTableModel{
     public static final String[] columnNames = {"Item name", "Item ID", "Item cost", "# in Stock"};
+    public GroceryCartTableModel GCTM;
 
-
-    public StockTableModel() {
+    public StockTableModel(GroceryCartTableModel GCTM) {
         super(columnNames, 0);
+        this.GCTM = GCTM;
     }
 
     public String getColumnName(int col) {
@@ -24,12 +25,25 @@ public class StockTableModel  extends DefaultTableModel{
 
     @Override
     public void fireTableChanged(TableModelEvent e) {
+        // ensure data integrity
         if(e.getFirstRow() >= 0 && e.getColumn() == 3){
             Object quantity = super.getValueAt(e.getFirstRow(), e.getColumn());
             if(Objects.isNull(quantity) || (Integer)quantity < 0){
                 super.setValueAt(0, e.getFirstRow(), e.getColumn());
             }
+            // update cart quantity
+            GCTM.updateQuantity((Integer)super.getValueAt(e.getFirstRow(), 1), (Integer)quantity);
         }
+        if(e.getColumn() == 2){
+            Object cost = super.getValueAt(e.getFirstRow(), e.getColumn());
+            if(Objects.isNull(cost) || (Double)cost < 0){
+                super.setValueAt(0, e.getFirstRow(), e.getColumn());
+            }
+            // update cart cost
+            GCTM.updateCost((Integer)super.getValueAt(e.getFirstRow(), 1), (Double)cost);
+        }
+        
+
         super.fireTableChanged(e);
     }
 
@@ -42,6 +56,11 @@ public class StockTableModel  extends DefaultTableModel{
             }
         }
         return null;
+    }
+
+    //add a row given an item
+    public void addItem(GroceryItem GI){
+        this.addRow(new Object[]{GI.name,GI.id,GI.cost,GI.stock});
     }
 
     @Override

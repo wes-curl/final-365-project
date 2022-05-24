@@ -3,11 +3,23 @@ select * from transaction;
 select * from purchasedgoods;
 select * from clerk;
 
+create table if not exists clerk (
+	clerkLOGIN varchar(16) not null,
+    clerkNAME varchar(40) not null,
+    clerkPW varchar(40) not null,
+    primary key (clerkLOGIN)
+);
+
+insert 
+	into clerk 
+	values
+	("tli30", "Tony Li", "safeloginonly"),
+    ("wcurl", "Wesley Curl", "123");
+
 create table if not exists produce (
-	produceID int not null unique,
+	produceID int not null unique auto_increment primary key,
     produceCOST int not null,
-    produceNAME varchar(40) not null default 'Unnamed Produce',
-    primary key (produceID, produceCOST)
+    produceNAME varchar(40) not null default 'Unnamed Produce'
 );
 
 insert into produce values
@@ -30,12 +42,7 @@ create table if not exists transaction (
 insert into transaction (transactionCLERK)
 	values
 		("tli30");
-        
-insert into purchasedgoods
-	values
-		(1, 101, 99, 5),
-        (1, 103, 1299, 2),
-        (1, 100, 999, 1);
+
 
 create table if not exists purchasedgoods (
 	purchasedgoodsTRID int not null, -- transaction id
@@ -45,42 +52,12 @@ create table if not exists purchasedgoods (
     primary key (purchasedgoodsTRID, purchasedgoodsPRID),
     foreign key (purchasedgoodsTRID)
 		references transaction(transactionID),
-	foreign key (purchasedgoodsPRID, purchasedgoodsCOST)
-		references produce(produceID, produceCOST)
+	foreign key (purchasedgoodsPRID)
+		references produce(produceID)
 );
-
-create table if not exists clerk (
-	clerkLOGIN varchar(16) not null,
-    clerkNAME varchar(40) not null,
-    clerkPW varchar(40) not null,
-    primary key (clerkLOGIN)
-);
-
-insert 
-	into clerk 
+        
+insert into purchasedgoods
 	values
-	("tli30", "Tony Li", "safeloginonly"),
-    ("wescurl", "Wesley Curl", "supersdupersafepass");
-    
-    
-drop table purchasedgoods;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-	drop table transaction;
-	drop table clerk;
-	drop table produce;
-	drop table purchasedgoods;
+		(1, 101, 99, 5),
+        (1, 103, 1299, 2),
+        (1, 100, 999, 1);

@@ -1,6 +1,2 @@
-- add items to stock panel (W)
-- update costs/number in stock should trigger checks in the frontend (W)
-
 Database stuff:
-- connect database info to relevant tables
-- complete transaction updates transaction record (T)
+- changing cost/stock in stock table does not change DB
