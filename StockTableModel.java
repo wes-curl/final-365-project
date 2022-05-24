@@ -7,10 +7,12 @@ import java.util.Vector;
 public class StockTableModel  extends DefaultTableModel{
     public static final String[] columnNames = {"Item name", "Item ID", "Item cost", "# in Stock"};
     public GroceryCartTableModel GCTM;
+    public GroceryDatabaseConnector GDC;
 
-    public StockTableModel(GroceryCartTableModel GCTM) {
+    public StockTableModel(GroceryCartTableModel GCTM, GroceryDatabaseConnector GDC) {
         super(columnNames, 0);
         this.GCTM = GCTM;
+        this.GDC = GDC;
     }
 
     public String getColumnName(int col) {
@@ -33,6 +35,7 @@ public class StockTableModel  extends DefaultTableModel{
             }
             // update cart quantity
             GCTM.updateQuantity((Integer)super.getValueAt(e.getFirstRow(), 1), (Integer)quantity);
+            GDC.updateQuantity((Integer)super.getValueAt(e.getFirstRow(), 1), (Integer)quantity);
         }
         if(e.getColumn() == 2){
             Object cost = super.getValueAt(e.getFirstRow(), e.getColumn());
@@ -41,10 +44,34 @@ public class StockTableModel  extends DefaultTableModel{
             }
             // update cart cost
             GCTM.updateCost((Integer)super.getValueAt(e.getFirstRow(), 1), (Double)cost);
+            GDC.updateCost((Integer)super.getValueAt(e.getFirstRow(), 1), (Double)cost);
         }
         
 
         super.fireTableChanged(e);
+    }
+
+    public void updateQuantity(Integer id, Integer quantity){
+        for(int i = 0; i < super.getRowCount(); i++){
+            if(super.getValueAt(i, 1) == id){
+                if(quantity < (Integer)super.getValueAt(i, 3)){
+                    super.setValueAt(quantity, i, 3);
+                }
+            }
+        }
+    }
+
+    public void submitTransaction(Vector<Vector> allRows){
+        try{
+            for(Vector v : allRows)
+            {
+                int prid = (int)v.get(0);
+                int qty  = (int)(v.get(2));
+                this.updateQuantity(prid, qty);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public GroceryItem getByID(Integer ID){

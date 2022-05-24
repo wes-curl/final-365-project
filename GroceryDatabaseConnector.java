@@ -124,8 +124,7 @@ public class GroceryDatabaseConnector {
         return infoList;
     }
 
-    public ArrayList<ArrayList<String>> submitTransaction(Vector<Vector> allRows, String clerkLogin){
-        ArrayList<ArrayList<String>> infoList = new ArrayList<>();
+    public void submitTransaction(Vector<Vector> allRows, String clerkLogin){
         try{
             Statement statement = connection.createStatement();
             statement.execute("insert into transaction (transactionCLERK) values ('" + clerkLogin + "')");
@@ -148,7 +147,6 @@ public class GroceryDatabaseConnector {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return infoList;
     }
 
 
@@ -186,5 +184,26 @@ public class GroceryDatabaseConnector {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void updateCost(Integer id, Double cost){
+        try{
+            Statement statement = connection.createStatement();
+            // edit the cost of an item in the stock table
+            String costString = ((Integer)Math.round((float)(cost * 100))).toString();
+            statement.execute("UPDATE produce SET produceCOST = "+costString+" WHERE produceID = "+id.toString()+";");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateQuantity(Integer id, Integer quantity){
+        try{
+            Statement statement = connection.createStatement();
+            // edit the quanitity of an item in the stock table
+            statement.execute("UPDATE produce SET stock = "+quantity.toString()+" WHERE produceID = "+id.toString()+";");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

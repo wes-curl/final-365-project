@@ -24,7 +24,7 @@ public class Main {
 
     private static Clerk clerk = null;
 
-    private static StockTableModel stockTableModel = new StockTableModel(null);
+    private static StockTableModel stockTableModel = new StockTableModel(null, groceryDatabaseConnector);
     private static GroceryCartTableModel cartTableModel  = new GroceryCartTableModel(stockTableModel);
     private static TransactionTableModel transactionModel = new TransactionTableModel(stockTableModel);
     private static List<GroceryItem> allItems;
@@ -183,10 +183,9 @@ public class Main {
         POS.add(completeTransaction);
 
         completeTransaction.addActionListener(new ActionListener(){  
-            public void actionPerformed(ActionEvent e){  
-                System.out.println("cart items in cartTableModel...");
-                System.out.println(totalCost);
+            public void actionPerformed(ActionEvent e){
                 groceryDatabaseConnector.submitTransaction(cartTableModel.getDataVector(), clerk.getLogin());
+                stockTableModel.submitTransaction(cartTableModel.getDataVector());
                 cartTableModel.clear();
             }  
         });
@@ -228,7 +227,6 @@ public class Main {
 
         newItem.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
-                System.out.println("added item " + newItemName.getText());
                 GroceryItem GI = groceryDatabaseConnector.createNewItem(newItemName.getText());
                 stockTableModel.addItem(GI);
             }  
