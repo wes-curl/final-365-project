@@ -154,7 +154,6 @@ public class GroceryDatabaseConnector {
         try{
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from clerk where clerkLOGIN = '"+username+"' and clerkPW = '"+password+"'");
-            System.out.println("select * from clerk where clerkLOGIN = '"+username+"' and clerkPW = '"+password+"'");
             if(resultSet.next()){
                 String login = resultSet.getString(1);
                 String name = resultSet.getString(2);
