@@ -1,8 +1,13 @@
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.DimensionUIResource;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.awt.Component;
 import java.awt.event.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -11,6 +16,8 @@ import java.text.DecimalFormat;
 public class Main {  
     private static JFrame login = new JFrame();
     private static JFrame POS = new JFrame();
+    private static int POSwidth = 1280;
+    private static int POSheight = 720;
     private static JFrame myTransactions = new JFrame();
 
     private static Double totalCost = 0d;
@@ -104,6 +111,12 @@ public class Main {
     }
 
     private static void makePOS(){
+        final int tww = 257;
+        final int twh = 41;
+        final int chartSizeWidth = POSwidth/8*5 - 300;
+        final int chartSizeHeight = POSheight/4*3 - POSheight/15;
+        final int insideSize = POSheight/5*3;
+
         JButton addItem = new JButton("Add:");
         addItem.setBounds(10,540,60,30);
         POS.add(addItem);
@@ -124,6 +137,9 @@ public class Main {
                 }
             }
         });
+        POS.setMaximumSize(new DimensionUIResource(1080, 720));
+        POS.setSize(POSwidth, POSheight);
+        POS.setMinimumSize(new DimensionUIResource(480, 320));
 
 
         cartTableModel.addTableModelListener(new TableModelListener() {
@@ -136,7 +152,7 @@ public class Main {
 
         cartTable = new JTable(cartTableModel);
         JScrollPane scrollableCartList = new JScrollPane(cartTable);
-        scrollableCartList.setBounds(16,16, 278, 512);
+        scrollableCartList.setBounds(16,16, POSwidth/8*5 - 320, insideSize);
         POS.add(scrollableCartList);
 
         JButton deleteItem = new JButton("Delete");
@@ -162,24 +178,34 @@ public class Main {
             stockTableModel.addRow(data);
         }
 
+        ColorUIResource red = new ColorUIResource(250, 100, 100);
+        ColorUIResource itemCell = new ColorUIResource(183, 250, 238);
+        ColorUIResource itemCellOpposite = new ColorUIResource(240, 166, 55);
+
+
+        
+
         JTable itemTable =  new JTable(stockTableModel);
+        final TableCellRenderer boldFont = new BoldCellRender();
+        itemTable.setBackground(itemCell);
+        itemTable.getColumnModel().getColumn(0).setCellRenderer(boldFont);
         JScrollPane scrollableItemTable = new JScrollPane(itemTable);
-        scrollableItemTable.setBounds(339,206, 245, 322);
+        scrollableItemTable.setBounds(POSwidth/8*5 - 150 + 106, 16, chartSizeWidth - 20, insideSize);
         POS.add(scrollableItemTable);
 
         JPanel listOfItemsAvailable = new JPanel();
-        listOfItemsAvailable.setBackground(new ColorUIResource(100, 100, 100));
-        listOfItemsAvailable.setBounds(333,200,257,334);
+        listOfItemsAvailable.setBackground(itemCellOpposite);
+        listOfItemsAvailable.setBounds(POSwidth/8*5 - 50, 10, chartSizeWidth, chartSizeHeight);
         
         POS.add(listOfItemsAvailable);
 
         JPanel listOfItemsInCart = new JPanel();
-        listOfItemsInCart.setBackground(new ColorUIResource(100, 100, 100));
-        listOfItemsInCart.setBounds(10,10,290,524);
+        listOfItemsInCart.setBackground(red);
+        listOfItemsInCart.setBounds(10,10, chartSizeWidth, chartSizeHeight);
         POS.add(listOfItemsInCart);
 
         JButton completeTransaction = new JButton("complete Transaction");
-        completeTransaction.setBounds(333,540,257,50);
+        completeTransaction.setBounds(POSwidth/8*5 - 300, 10 + POSheight/4*3 - POSheight/15,257,50);
         POS.add(completeTransaction);
 
         completeTransaction.addActionListener(new ActionListener(){  
@@ -189,12 +215,12 @@ public class Main {
                 cartTableModel.clear();
             }  
         });
-
-        welcome.setBounds(333,10,257,41);
+        
+        welcome.setBounds((POSwidth- tww - 16)/2, POSheight/15,tww,twh);
         POS.add(welcome);
 
         JButton seeYourTransactions = new JButton("See your transactions");
-        seeYourTransactions.setBounds(358,51,207,32);
+        seeYourTransactions.setBounds((POSwidth - tww + 30)/2, POSheight/15 + twh, tww-50, twh);
         POS.add(seeYourTransactions);
 
         seeYourTransactions.addActionListener(new ActionListener(){
@@ -206,7 +232,7 @@ public class Main {
         });
 
         JButton seeAllTransactions = new JButton("See all transactions");
-        seeAllTransactions.setBounds(358,88,207,32);
+        seeAllTransactions.setBounds((POSwidth - tww + 30)/2, POSheight/15 + twh * 2, tww-50, twh);
         POS.add(seeAllTransactions);
 
         seeAllTransactions.addActionListener(new ActionListener(){
@@ -218,11 +244,11 @@ public class Main {
         });
 
         JButton newItem = new JButton("Add a new item");
-        newItem.setBounds(358,125,207,28);
+        newItem.setBounds(POSwidth/4*3 - POSwidth/18, POSheight/9*8 - POSheight/7,207,28);
         POS.add(newItem);
 
         JTextField newItemName = new JTextField("[item name]");
-        newItemName.setBounds(358,155,207,28);
+        newItemName.setBounds(POSwidth/4*3 - POSwidth/18, POSheight/9*8 - POSheight/19 - POSheight/7,207,28);
         POS.add(newItemName);
 
         newItem.addActionListener(new ActionListener(){  
@@ -232,12 +258,12 @@ public class Main {
             }  
         });
 
-        JPanel availableData = new JPanel();
-        availableData.setBackground(new ColorUIResource(100, 100, 100));
-        availableData.setBounds(333,10,257,184);
-        POS.add(availableData);
+        // JPanel availableData = new JPanel();
+        // availableData.setBackground(new ColorUIResource(100, 100, 100));
+        // availableData.setBounds(333,10,257,184);
+        // POS.add(availableData);
 
-        POS.setSize(620,640);
+        POS.setSize(POSwidth,POSheight);
         POS.setLayout(null);
         POS.setVisible(false);        
         
