@@ -48,7 +48,8 @@ public class Main {
     }
 
     private static void makeLogin(){
-        JLabel title = new JLabel("A Real P.O.S.");
+        JLabel title = new JLabel("Point of Service Login");
+        title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setBounds(13,12,175,40);
         login.add(title);
 
@@ -169,9 +170,6 @@ public class Main {
         ColorUIResource red = new ColorUIResource(250, 100, 100);
         ColorUIResource itemCell = new ColorUIResource(183, 250, 238);
         ColorUIResource itemCellOpposite = new ColorUIResource(240, 166, 55);
-
-
-        
 
         JTable itemTable =  new JTable(stockTableModel);
         final TableCellRenderer boldFont = new BoldCellRender();
