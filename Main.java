@@ -76,18 +76,6 @@ public class Main {
                 //do nothing
             }
         });
-//        passwordField.addFocusListener(new FocusListener() {
-//            public void focusLost(FocusEvent e) {
-//                if(passwordField.getText().trim().equals(""))
-//                    passwordField.setText("password");
-//                //do nothing
-//            }
-//            public void focusGained(FocusEvent e) {
-//                if(passwordField.getText().trim().equals("password"))
-//                    passwordField.setText("");
-//                //do nothing
-//            }
-//        });
         submit.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){
                 POS.setLocationRelativeTo(null);
@@ -253,6 +241,7 @@ public class Main {
 
         newItem.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
+                System.out.print(newItemName.getText());
                 GroceryItem GI = groceryDatabaseConnector.createNewItem(newItemName.getText());
                 stockTableModel.addItem(GI);
             }  
@@ -292,7 +281,7 @@ public class Main {
                 transactionModel.clear();
                 for (ArrayList<String> listed: transactions) {
                     data[0] = listed.get(0);
-                    data[1] = listed.get(1);
+                    data[1] = Double.valueOf(Integer.parseInt(listed.get(1)))/100;
                     data[2] = listed.get(2);
                     data[3] = listed.get(3);
                     transactionModel.addRow(data);
@@ -307,7 +296,7 @@ public class Main {
                 transactionModel.clear();
                 for (ArrayList<String> listed: transactions) {
                     data[0] = listed.get(0);
-                    data[1] = listed.get(1);
+                    data[1] = Double.valueOf(Integer.parseInt(listed.get(1)))/100;
                     data[2] = listed.get(2);
                     data[3] = listed.get(3);
                     transactionModel.addRow(data);
