@@ -1,4 +1,8 @@
 Original UI plan/implementation : Wesley
+
+SQL Create Tables               : Tony
+SQL Create Triggers             : Tony
+
 SQL table definition fixes      : Wesley
 Swing TableModels               : Wesley 
-SQL queries                     : Wesley
+SQL queries                     : Wesley / Tony
