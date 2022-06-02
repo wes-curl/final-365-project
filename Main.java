@@ -69,19 +69,15 @@ public class Main {
             public void focusLost(FocusEvent e) {
                 if(userName.getText().trim().equals(""))
                     userName.setText("username");
-                //do nothing
             }
             public void focusGained(FocusEvent e) {
                 if(userName.getText().trim().equals("username"))
                     userName.setText("");
-                //do nothing
             }
         });
         submit.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){
                 POS.setLocationRelativeTo(null);
-                System.out.println(userName.getText());
-                System.out.println(passwordField.getPassword());
                 if(userName.getText().length() > 0 && passwordField.getPassword().length > 0){
                     clerk = groceryDatabaseConnector.isValidLogin(userName.getText(), String.valueOf(passwordField.getPassword()));
                     if(clerk != null){
@@ -102,20 +98,22 @@ public class Main {
     private static void makePOS(){
         final int tww = 257;
         final int twh = 41;
+        final int segmentHeight = POSheight/8;
+        final int segmentWidth = POSwidth/5;
         final int chartSizeWidth = POSwidth/8*5 - 300;
         final int chartSizeHeight = POSheight/4*3 - POSheight/15;
         final int insideSize = POSheight/5*3;
 
         JButton addItem = new JButton("Add:");
-        addItem.setBounds(10,540,60,30);
+        addItem.setBounds(0,6*segmentHeight,2*segmentWidth/3,segmentHeight);
         POS.add(addItem);
 
         JLabel total = new JLabel("Total: 0.00");
-        total.setBounds(10,565,257,41);
+        total.setBounds(0,7*segmentHeight,2*segmentWidth,segmentHeight);
         POS.add(total);
 
         JTextField itemNumber = new JTextField();
-        itemNumber.setBounds(80,540,120,30);
+        itemNumber.setBounds(2*segmentWidth/3,6*segmentHeight,2*segmentWidth/3,segmentHeight);
         POS.add(itemNumber);
 
         itemNumber.addKeyListener(new KeyAdapter() {
@@ -126,8 +124,8 @@ public class Main {
                 }
             }
         });
-        POS.setMaximumSize(new DimensionUIResource(1080, 720));
-        POS.setSize(POSwidth, POSheight);
+        POS.setMaximumSize(new DimensionUIResource(POSwidth+256, POSheight+256));
+        POS.setSize(POSwidth+13,POSheight+36);
         POS.setMinimumSize(new DimensionUIResource(480, 320));
 
 
@@ -141,7 +139,7 @@ public class Main {
 
         cartTable = new JTable(cartTableModel);
         JScrollPane scrollableCartList = new JScrollPane(cartTable);
-        scrollableCartList.setBounds(16,16, POSwidth/8*5 - 320, insideSize);
+        scrollableCartList.setBounds(0,0, 2*segmentWidth, 6*segmentHeight);
         POS.add(scrollableCartList);
 
         JButton deleteItem = new JButton("Delete");
@@ -150,8 +148,6 @@ public class Main {
 
         deleteItem.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
-                System.out.println("deleting current row: " + cartTable.getSelectedRow());
-                System.out.println(cartTable.getSize());
                 if(cartTable.getSelectedRow() > -1){
                     cartTableModel.removeRow(cartTable.getSelectedRow());
                 }
@@ -169,21 +165,21 @@ public class Main {
 
         ColorUIResource red = new ColorUIResource(250, 100, 100);
         ColorUIResource itemCell = new ColorUIResource(183, 250, 238);
-        ColorUIResource itemCellOpposite = new ColorUIResource(240, 166, 55);
+        //ColorUIResource itemCellOpposite = new ColorUIResource(240, 166, 55);
 
         JTable itemTable =  new JTable(stockTableModel);
         final TableCellRenderer boldFont = new BoldCellRender();
         itemTable.setBackground(itemCell);
         itemTable.getColumnModel().getColumn(0).setCellRenderer(boldFont);
         JScrollPane scrollableItemTable = new JScrollPane(itemTable);
-        scrollableItemTable.setBounds(POSwidth/8*5 - 150 + 106, 16, chartSizeWidth - 20, insideSize);
+        scrollableItemTable.setBounds(segmentWidth*3, 0, segmentWidth*2, segmentHeight*6);
         POS.add(scrollableItemTable);
 
-        JPanel listOfItemsAvailable = new JPanel();
-        listOfItemsAvailable.setBackground(itemCellOpposite);
-        listOfItemsAvailable.setBounds(POSwidth/8*5 - 50, 10, chartSizeWidth, chartSizeHeight);
+        //JPanel listOfItemsAvailable = new JPanel();
+        //listOfItemsAvailable.setBackground(itemCellOpposite);
+        //listOfItemsAvailable.setBounds(POSwidth/8*5 - 50, 10, chartSizeWidth, chartSizeHeight);
         
-        POS.add(listOfItemsAvailable);
+        //POS.add(listOfItemsAvailable);
 
         JPanel listOfItemsInCart = new JPanel();
         listOfItemsInCart.setBackground(red);
@@ -191,7 +187,7 @@ public class Main {
         POS.add(listOfItemsInCart);
 
         JButton completeTransaction = new JButton("complete Transaction");
-        completeTransaction.setBounds(POSwidth/8*5 - 300, 10 + POSheight/4*3 - POSheight/15,257,50);
+        completeTransaction.setBounds(segmentWidth*2, segmentHeight*6,segmentWidth,segmentHeight*2);
         POS.add(completeTransaction);
 
         completeTransaction.addActionListener(new ActionListener(){  
@@ -206,7 +202,7 @@ public class Main {
         POS.add(welcome);
 
         JButton seeYourTransactions = new JButton("See your transactions");
-        seeYourTransactions.setBounds((POSwidth - tww + 30)/2, POSheight/15 + twh, tww-50, twh);
+        seeYourTransactions.setBounds(segmentWidth*2, segmentHeight, segmentWidth, segmentHeight);
         POS.add(seeYourTransactions);
 
         seeYourTransactions.addActionListener(new ActionListener(){
@@ -218,7 +214,7 @@ public class Main {
         });
 
         JButton seeAllTransactions = new JButton("See all transactions");
-        seeAllTransactions.setBounds((POSwidth - tww + 30)/2, POSheight/15 + twh * 2, tww-50, twh);
+        seeAllTransactions.setBounds(segmentWidth*2, segmentHeight*2, segmentWidth, segmentHeight);
         POS.add(seeAllTransactions);
 
         seeAllTransactions.addActionListener(new ActionListener(){
@@ -230,11 +226,11 @@ public class Main {
         });
 
         JButton newItem = new JButton("Add a new item");
-        newItem.setBounds(POSwidth/4*3 - POSwidth/18, POSheight/9*8 - POSheight/7,207,28);
+        newItem.setBounds(segmentWidth*3, segmentHeight*7,segmentWidth*2,segmentHeight);
         POS.add(newItem);
 
         JTextField newItemName = new JTextField("[item name]");
-        newItemName.setBounds(POSwidth/4*3 - POSwidth/18, POSheight/9*8 - POSheight/19 - POSheight/7,207,28);
+        newItemName.setBounds(segmentWidth*3, segmentHeight*6,segmentWidth*2,segmentHeight);
         POS.add(newItemName);
 
         newItem.addActionListener(new ActionListener(){  
@@ -249,8 +245,6 @@ public class Main {
         // availableData.setBackground(new ColorUIResource(100, 100, 100));
         // availableData.setBounds(333,10,257,184);
         // POS.add(availableData);
-
-        POS.setSize(POSwidth,POSheight);
         POS.setLayout(null);
         POS.setVisible(false);        
         
@@ -258,7 +252,6 @@ public class Main {
             public void actionPerformed(ActionEvent e){  
                 if(itemNumber.getText().length() > 0 && itemNumber.getText().length() < 10){
                     Integer idNumber = Integer.parseInt(itemNumber.getText());
-                    System.out.println("adding: " + itemNumber.getText());
                     if(stockTableModel.getByID(idNumber) != null){
                         GroceryItem GCI = stockTableModel.getByID(idNumber);
                         Object[] row = {GCI.id, GCI.name, 1, GCI.cost};
@@ -320,7 +313,6 @@ public class Main {
 
         returnToPOS.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                System.out.println("Returning to POS");
                 myTransactions.setVisible(false);
                 POS.setLocationRelativeTo(null);
                 POS.setVisible(true);
