@@ -68,18 +68,8 @@ public class StockTableModel  extends DefaultTableModel{
                 int oldQTY = -1;
                 Vector<Vector> vectors = this.dataVector;
                 int prid = (int)v.get(0);
-                for(Vector v2 : vectors)
-                {
-                    if ((int)v.get(0) == prid)
-                    {
-                        oldQTY = (int)v.get(2);
-                    }
-                }
-                int qty  = (int)(v.get(2));
-                if(oldQTY >= qty)
-                {
-                    this.updateQuantity(prid, oldQTY - qty);
-                }
+                int qty  = this.getByID(prid).stock - (int)(v.get(2));
+                this.updateQuantity(prid, qty);
             }
         } catch (Exception e) {
             e.printStackTrace();

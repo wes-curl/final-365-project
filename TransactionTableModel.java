@@ -81,6 +81,6 @@ public class TransactionTableModel extends DefaultTableModel {
     @Override
     public boolean isCellEditable(int row, int column)
     {
-        return column == 2;
+        return false;
     }
 }

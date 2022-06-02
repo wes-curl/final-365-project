@@ -1,0 +1,4 @@
+Original UI plan/implementation : Wesley
+SQL table definition fixes      : Wesley
+Swing TableModels               : Wesley 
+SQL queries                     : Wesley
