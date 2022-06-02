@@ -20,6 +20,7 @@ public class Main {
     private static int POSheight = 720;
     private static JFrame myTransactions = new JFrame();
 
+
     private static Double totalCost = 0d;
 
     private static JTable cartTable;
@@ -175,9 +176,11 @@ public class Main {
         //ColorUIResource itemCellOpposite = new ColorUIResource(240, 166, 55);
 
         JTable itemTable =  new JTable(stockTableModel);
+        final TableCellRenderer centerAlign = new CenterCellRender();
         final TableCellRenderer boldFont = new BoldCellRender();
         itemTable.setBackground(itemCell);
         itemTable.getColumnModel().getColumn(0).setCellRenderer(boldFont);
+        itemTable.getColumnModel().getColumn(3).setCellRenderer(centerAlign);
         JScrollPane scrollableItemTable = new JScrollPane(itemTable);
         scrollableItemTable.setBounds(segmentWidth*3, 0, segmentWidth*2, segmentHeight*6);
         POS.add(scrollableItemTable);
