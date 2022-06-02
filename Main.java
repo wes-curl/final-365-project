@@ -53,6 +53,8 @@ public class Main {
         title.setBounds(13,12,175,40);
         login.add(title);
 
+        login.setResizable(false);
+
         JTextField userName = new JTextField("");
         userName.setBounds(50,85,100,20);
         login.add(userName);   
@@ -106,25 +108,37 @@ public class Main {
         final int twh = 41;
         final int segmentHeight = POSheight/8;
         final int segmentWidth = POSwidth/5;
-        final int chartSizeWidth = POSwidth/8*5 - 300;
-        final int chartSizeHeight = POSheight/4*3 - POSheight/15;
         final int gutterSize = segmentHeight / 2;
+        final int marginWidth = POSwidth / 100;
+        final int marginHeight = POSheight / 100;
 
         POS.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JButton addItem = new JButton("Add:");
-        addItem.setBounds(0,6*segmentHeight + gutterSize,2*segmentWidth/3,gutterSize);
+        addItem.setBounds(marginWidth,
+                        marginHeight+6*segmentHeight + gutterSize,
+                        2*segmentWidth/3 - 2*marginWidth,
+                        gutterSize- 2*marginHeight);
         POS.add(addItem);
 
         JLabel total = new JLabel("Total: 0.00");
-        total.setBounds(0,7*segmentHeight,2*segmentWidth,gutterSize);
+        total.setBounds(marginWidth,
+                        marginHeight+7*segmentHeight,
+                        2*segmentWidth - 2*marginWidth,
+                        gutterSize- 2*marginHeight);
         POS.add(total);
 
         JTextField itemNumber = new JTextField();
-        itemNumber.setBounds(2*segmentWidth/3,6*segmentHeight + gutterSize,2*segmentWidth/3,gutterSize);
+        itemNumber.setBounds(2*segmentWidth/3 + marginWidth,
+                            marginHeight+6*segmentHeight + gutterSize,
+                            2*segmentWidth/3 - 2*marginWidth,
+                            gutterSize- 2*marginHeight);
         POS.add(itemNumber);
 
         JButton deleteItem = new JButton("Delete");
-        deleteItem.setBounds(4*segmentWidth/3+segmentWidth,6*segmentHeight + gutterSize,2*segmentWidth/3,gutterSize);
+        deleteItem.setBounds(4*segmentWidth/3 + marginWidth,
+                            6*segmentHeight + gutterSize + marginHeight,
+                            2*segmentWidth/3 - 2*marginWidth,
+                            gutterSize- 2*marginHeight);
         POS.add(deleteItem);
 
         itemNumber.addKeyListener(new KeyAdapter() {
@@ -135,9 +149,9 @@ public class Main {
                 }
             }
         });
-        POS.setMaximumSize(new DimensionUIResource(POSwidth+256, POSheight+256));
+        
         POS.setSize(POSwidth+13,POSheight+36);
-        POS.setMinimumSize(new DimensionUIResource(480, 320));
+        POS.setResizable(false);
 
 
         cartTableModel.addTableModelListener(new TableModelListener() {
@@ -150,7 +164,10 @@ public class Main {
 
         cartTable = new JTable(cartTableModel);
         JScrollPane scrollableCartList = new JScrollPane(cartTable);
-        scrollableCartList.setBounds(0,0, 2*segmentWidth, 6*segmentHeight);
+        scrollableCartList.setBounds(marginWidth,
+                                    marginHeight, 
+                                    2*segmentWidth - 2*marginWidth, 
+                                    6*segmentHeight- 2*marginHeight);
         POS.add(scrollableCartList);
 
         deleteItem.addActionListener(new ActionListener(){  
@@ -179,7 +196,10 @@ public class Main {
         itemTable.setBackground(itemCell);
         itemTable.getColumnModel().getColumn(0).setCellRenderer(boldFont);
         JScrollPane scrollableItemTable = new JScrollPane(itemTable);
-        scrollableItemTable.setBounds(segmentWidth*3, 0, segmentWidth*2, segmentHeight*6);
+        scrollableItemTable.setBounds(marginWidth+segmentWidth*3, 
+                                    marginHeight, 
+                                    segmentWidth*2 - 2*marginWidth, 
+                                    segmentHeight*6- 2*marginHeight);
         POS.add(scrollableItemTable);
 
         //JPanel listOfItemsAvailable = new JPanel();
@@ -187,14 +207,17 @@ public class Main {
         //listOfItemsAvailable.setBounds(POSwidth/8*5 - 50, 10, chartSizeWidth, chartSizeHeight);
         
         //POS.add(listOfItemsAvailable);
-
+            /*
         JPanel listOfItemsInCart = new JPanel();
         listOfItemsInCart.setBackground(red);
         listOfItemsInCart.setBounds(10,10, chartSizeWidth, chartSizeHeight);
-        POS.add(listOfItemsInCart);
+        POS.add(listOfItemsInCart);*/
 
         JButton completeTransaction = new JButton("complete Transaction");
-        completeTransaction.setBounds(segmentWidth*2, segmentHeight*6 + gutterSize,segmentWidth,segmentHeight);
+        completeTransaction.setBounds(marginWidth+segmentWidth*2, 
+                                        segmentHeight*6 + gutterSize + marginHeight,
+                                        segmentWidth - 2*marginWidth,
+                                        segmentHeight- 2*marginHeight);
         POS.add(completeTransaction);
 
         completeTransaction.addActionListener(new ActionListener(){  
@@ -209,7 +232,10 @@ public class Main {
         POS.add(welcome);
 
         JButton seeYourTransactions = new JButton("See your transactions");
-        seeYourTransactions.setBounds(segmentWidth*2, segmentHeight + gutterSize, segmentWidth, gutterSize);
+        seeYourTransactions.setBounds(marginWidth+segmentWidth*2, 
+                                    segmentHeight + gutterSize + marginHeight, 
+                                    segmentWidth - 2*marginWidth, 
+                                    gutterSize- 2*marginHeight);
         POS.add(seeYourTransactions);
 
         seeYourTransactions.addActionListener(new ActionListener(){
@@ -221,7 +247,10 @@ public class Main {
         });
 
         JButton seeAllTransactions = new JButton("See all transactions");
-        seeAllTransactions.setBounds(segmentWidth*2, segmentHeight*2 + gutterSize, segmentWidth, gutterSize);
+        seeAllTransactions.setBounds(marginWidth+segmentWidth*2, 
+                                    segmentHeight*2 + gutterSize  + marginHeight, 
+                                    segmentWidth - 2*marginWidth, 
+                                    gutterSize- 2*marginHeight);
         POS.add(seeAllTransactions);
 
         seeAllTransactions.addActionListener(new ActionListener(){
@@ -233,11 +262,17 @@ public class Main {
         });
 
         JButton newItem = new JButton("Add a new item");
-        newItem.setBounds(segmentWidth*3 + segmentWidth/2, segmentHeight*7,segmentWidth,gutterSize);
+        newItem.setBounds(marginWidth+segmentWidth*3 + segmentWidth/2, 
+                        segmentHeight*7  + marginHeight,
+                        segmentWidth - 2*marginWidth,
+                        gutterSize - 2*marginHeight);
         POS.add(newItem);
 
         JTextField newItemName = new JTextField("[item name]");
-        newItemName.setBounds(segmentWidth*3, segmentHeight*6 + gutterSize,segmentWidth*2,gutterSize);
+        newItemName.setBounds(marginWidth+segmentWidth*3, 
+                            segmentHeight*6 + gutterSize  + marginHeight,
+                            segmentWidth*2 - 2*marginWidth,
+                            gutterSize- 2*marginHeight);
         POS.add(newItemName);
 
         newItem.addActionListener(new ActionListener(){  
@@ -311,6 +346,8 @@ public class Main {
         JScrollPane scrollableCartList = new JScrollPane(transactionCartTable);
         scrollableCartList.setBounds(16,16, 570, 512);
         myTransactions.add(scrollableCartList);
+
+        myTransactions.setResizable(false);
 
         int buttonWidth = 257;
         int uiWidth = 620;
