@@ -88,7 +88,7 @@ public class Main {
                 }
             }  
         });
-        
+        login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         login.setSize(200,300);
         login.setLayout(null);//using no layout managers
         login.setLocationRelativeTo(null);
@@ -104,6 +104,7 @@ public class Main {
         final int chartSizeHeight = POSheight/4*3 - POSheight/15;
         final int insideSize = POSheight/5*3;
 
+        POS.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JButton addItem = new JButton("Add:");
         addItem.setBounds(0,6*segmentHeight,2*segmentWidth/3,segmentHeight);
         POS.add(addItem);
@@ -299,6 +300,7 @@ public class Main {
 
 
     private static void makeMyTransactions(){
+        myTransactions.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JTable transactionCartTable = new JTable(transactionModel);
         JScrollPane scrollableCartList = new JScrollPane(transactionCartTable);
         scrollableCartList.setBounds(16,16, 570, 512);

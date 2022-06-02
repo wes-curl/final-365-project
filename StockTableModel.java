@@ -65,6 +65,8 @@ public class StockTableModel  extends DefaultTableModel{
         try{
             for(Vector v : allRows)
             {
+                int oldQTY = -1;
+                Vector<Vector> vectors = this.dataVector;
                 int prid = (int)v.get(0);
                 int qty  = this.getByID(prid).stock - (int)(v.get(2));
                 this.updateQuantity(prid, qty);
