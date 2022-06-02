@@ -79,11 +79,17 @@ public class Main {
             public void actionPerformed(ActionEvent e){
                 POS.setLocationRelativeTo(null);
                 if(userName.getText().length() > 0 && passwordField.getPassword().length > 0){
-                    clerk = groceryDatabaseConnector.isValidLogin(userName.getText(), String.valueOf(passwordField.getPassword()));
-                    if(clerk != null){
-                        login.setVisible(false);
-                        POS.setVisible(true);
-                        welcome.setText("Welcome " + clerk.getName());
+                    try {
+                        String hashedPW = PassEncTech2.toHexString(PassEncTech2.getSHA(String.valueOf(passwordField.getPassword())));
+                        clerk = groceryDatabaseConnector.isValidLogin(userName.getText(), hashedPW);
+                        if(clerk != null){
+                            login.setVisible(false);
+                            POS.setVisible(true);
+                            welcome.setText("Welcome " + clerk.getName());
+                        }
+                    } catch (Exception except) {
+                        System.out.println("Error with " + except.toString());
+                        //TODO: handle exception
                     }
                 }
             }  

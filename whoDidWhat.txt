@@ -2,7 +2,8 @@ Original UI plan/implementation : Wesley
 
 SQL Create Tables               : Tony
 SQL Create Triggers             : Tony
-
+SQL Table Data (initial)        : Tony
+Encrypted Password implement    : Tony
 SQL table definition fixes      : Wesley
 Swing TableModels               : Wesley 
 SQL queries                     : Wesley / Tony
