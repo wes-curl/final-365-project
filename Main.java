@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 
 public class Main {  
     private static JFrame login = new JFrame();
+    private static JFrame accountCreation = new JFrame();
     private static JFrame POS = new JFrame();
     private static int POSwidth = 1280;
     private static int POSheight = 720;
@@ -37,6 +38,7 @@ public class Main {
     private static TransactionTableModel transactionModel = new TransactionTableModel(stockTableModel);
     private static List<GroceryItem> allItems;
 
+    //3/8th 4/8th for button position [available spots]
     public static void main(String[] args) { 
         stockTableModel.GCTM = cartTableModel;
         allItems = groceryDatabaseConnector.getGroceryItems();
@@ -46,6 +48,92 @@ public class Main {
         POS.setTitle("Point of Service 3000");
         makeMyTransactions();
         myTransactions.setTitle("Transactions Menu");
+        makeAccountCreation();
+    }
+
+    private static void makeAccountCreation(){
+        JLabel title = new JLabel("Clerk Creation Menu");
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setBounds(13,12,175,40);
+        accountCreation.add(title);
+
+        accountCreation.setResizable(false);
+
+        JTextField userName = new JTextField("");
+        userName.setBounds(45,85,100,20);
+        accountCreation.add(userName);
+
+        JTextField clerkName = new JTextField("");
+        clerkName.setBounds(45,110,100,20);
+        accountCreation.add(clerkName);
+
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setBounds(45,138,100,20);
+        accountCreation.add(passwordField);
+        
+        JPasswordField confirmedPWField = new JPasswordField();
+        confirmedPWField.setBounds(45, 191, 100, 20);
+        accountCreation.add(confirmedPWField);
+
+        JButton submit = new JButton("Create");
+        submit.setBounds(55,226,80,26);
+        accountCreation.add(submit);
+
+        userName.addFocusListener(new FocusListener() {
+            public void focusLost(FocusEvent e) {
+                if(userName.getText().trim().equals(""))
+                    userName.setText("User Login");
+            }
+            public void focusGained(FocusEvent e) {
+                if(userName.getText().trim().equals("User Login"))
+                    userName.setText("");
+            }
+        });
+        clerkName.addFocusListener(new FocusListener() {
+            public void focusLost(FocusEvent e) {
+                if(clerkName.getText().trim().equals(""))
+                clerkName.setText("Clerk Name");
+            }
+            public void focusGained(FocusEvent e) {
+                if(clerkName.getText().trim().equals("Clerk Name"))
+                clerkName.setText("");
+            }
+        });
+        submit.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){
+                POS.setLocationRelativeTo(null);
+                String pw = String.valueOf(passwordField.getPassword());
+                String cpw = String.valueOf(confirmedPWField.getPassword());
+
+                if(pw.equals(cpw) && pw.length() > 0)
+                {
+                    System.out.println("Passwords are equivalent and not empty");
+                    groceryDatabaseConnector.createNewClerk(userName.getText(), pw, clerkName.getText());
+                }
+                else{
+                    System.out.println("Passwords are not equivalent try again");
+                }
+                if(userName.getText().length() > 0 && passwordField.getPassword().length > 0){
+                    try {
+                        String hashedPW = PassEncTech2.toHexString(PassEncTech2.getSHA(String.valueOf(passwordField.getPassword())));
+                        clerk = groceryDatabaseConnector.isValidLogin(userName.getText(), hashedPW);
+                        if(clerk != null){
+                            accountCreation.setVisible(false);
+                            POS.setVisible(true);
+                            welcome.setText("Welcome " + clerk.getName());
+                        }
+                    } catch (Exception except) {
+                        System.out.println("Error with " + except.toString());
+                        //TODO: handle exception
+                    }
+                }
+            }  
+        });
+        accountCreation.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        accountCreation.setSize(200,300);
+        accountCreation.setLayout(null);//using no layout managers
+        accountCreation.setLocationRelativeTo(null);
+        accountCreation.setVisible(false);//making the frame visible  
     }
 
     private static void makeLogin(){
@@ -260,6 +348,21 @@ public class Main {
             public void actionPerformed(ActionEvent e){
                 myTransactions.setLocationRelativeTo(null);
                 myTransactions.setVisible(true);
+                POS.setVisible(false);
+            }
+        });
+
+        JButton createNewClerk = new JButton("Create New Clerk");
+        createNewClerk.setBounds(marginWidth+segmentWidth*2, 
+                                    segmentHeight*3 + gutterSize  + marginHeight, 
+                                    segmentWidth - 2*marginWidth, 
+                                    gutterSize- 2*marginHeight);
+        POS.add(createNewClerk);
+
+        createNewClerk.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                accountCreation.setLocationRelativeTo(null);
+                accountCreation.setVisible(true);
                 POS.setVisible(false);
             }
         });

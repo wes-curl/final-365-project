@@ -49,6 +49,23 @@ public class GroceryDatabaseConnector {
         }
     }
 
+    public void createNewClerk(String login, String pw, String name){
+        try{
+            Statement statement = connection.createStatement();
+            String hashedPW = PassEncTech2.toHexString(PassEncTech2.getSHA(pw));
+            String value = "('" + login + "', '" + name + "', '" + hashedPW + "');";
+            if(login.contains(";") || name.contains(";"))
+            {
+                return;
+            }
+            // System.out.println("insert into clerk (clerkLOGIN, clerkNAME, clerkPW) values " + value);
+            statement.execute("insert into clerk (clerkLOGIN, clerkNAME, clerkPW) values " + value);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void getItemsFromSpecificTransaction(int transaction){
         try{
             Statement statement = connection.createStatement();
